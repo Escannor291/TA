@@ -14,7 +14,7 @@ class UserModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['username', 'password', 'name', 'role'];
+    protected $allowedFields    = ['username', 'password', 'name', 'role', 'profile_image'];
 
     // Dates
     protected $useTimestamps = true;
@@ -27,4 +27,10 @@ class UserModel extends Model
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
+
+    // Error Handling
+    public function handleError($error)
+    {
+        log_message('error', $error);
+    }
 }

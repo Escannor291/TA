@@ -76,24 +76,21 @@
             <div class="flex flex-col w-64 bg-primary border-r">
                 <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
                     <div class="flex items-center flex-shrink-0 px-4">
-                        <h1 class="text-xl font-semibold text-white font-literata">Perpustakaan Fachri</h1>
+                        <h1 class="text-xl font-semibold text-white">Perpustakaan Fachri</h1>
                     </div>
                     
                     <nav class="flex-1 px-2 mt-5 space-y-1 bg-primary">
-                        <a href="<?= base_url('admin/dashboard') ?>" class="<?= uri_string() == 'admin/dashboard' ? 'active-nav-link' : 'text-white hover:bg-primary-dark' ?> group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <a href="<?= base_url('user/dashboard') ?>" class="<?= uri_string() == 'user/dashboard' ? 'active-nav-link' : 'text-white hover:bg-primary-dark' ?> group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                             <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
                         </a>
-                        <a href="<?= base_url('admin/buku') ?>" class="<?= uri_string() == 'admin/buku' ? 'active-nav-link' : 'text-white hover:bg-primary-dark' ?> group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                            <i class="fas fa-book mr-3"></i> Kelola Buku
+                        <a href="<?= base_url('user/katalog') ?>" class="<?= uri_string() == 'user/katalog' ? 'active-nav-link' : 'text-white hover:bg-primary-dark' ?> group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-book mr-3"></i> Katalog Buku
                         </a>
-                        <a href="<?= base_url('admin/peminjaman') ?>" class="<?= uri_string() == 'admin/peminjaman' ? 'active-nav-link' : 'text-white hover:bg-primary-dark' ?> group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                            <i class="fas fa-exchange-alt mr-3"></i> Peminjaman
+                        <a href="<?= base_url('user/peminjaman') ?>" class="<?= uri_string() == 'user/peminjaman' ? 'active-nav-link' : 'text-white hover:bg-primary-dark' ?> group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-book-reader mr-3"></i> Peminjaman Saya
                         </a>
-                        <a href="<?= base_url('admin/pengembalian') ?>" class="<?= uri_string() == 'admin/pengembalian' ? 'active-nav-link' : 'text-white hover:bg-primary-dark' ?> group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                            <i class="fas fa-undo-alt mr-3"></i> Pengembalian
-                        </a>
-                        <a href="<?= base_url('admin/users') ?>" class="<?= uri_string() == 'admin/users' ? 'active-nav-link' : 'text-white hover:bg-primary-dark' ?> group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                            <i class="fas fa-users mr-3"></i> Kelola Anggota
+                        <a href="<?= base_url('user/profile') ?>" class="<?= uri_string() == 'user/profile' ? 'active-nav-link' : 'text-white hover:bg-primary-dark' ?> group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-user mr-3"></i> Profil Saya
                         </a>
                         <a href="<?= base_url('auth/logout') ?>" class="text-white hover:bg-primary-dark group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                             <i class="fas fa-sign-out-alt mr-3"></i> Logout
@@ -107,16 +104,16 @@
         <div class="flex flex-col flex-1 w-0 overflow-hidden">
             <!-- Top header -->
             <div class="relative z-10 flex flex-shrink-0 h-16 bg-white shadow">
-                <button class="px-4 text-gray-500 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:hidden">
+                <button class="px-4 text-gray-500 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:hidden" aria-label="Open sidebar">
                     <span class="sr-only">Open sidebar</span>
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="flex justify-between flex-1 px-4">
                     <div class="flex flex-1">
-                        <h2 class="text-xl font-semibold text-gray-800 self-center font-literata"><?= $title ?? 'Dashboard - Perpustakaan Fachri' ?></h2>
+                        <h2 class="text-xl font-semibold text-gray-800 self-center"><?= $title ?? 'Dashboard Anggota - Perpustakaan Fachri' ?></h2>
                     </div>
                     <div class="flex items-center ml-4 md:ml-6">
-                        <span class="text-gray-700 font-poppins"><?= session()->get('name') ?? 'Administrator' ?></span>
+                        <span class="text-gray-700"><?= session()->get('name') ?? 'Anggota' ?></span>
                     </div>
                 </div>
             </div>

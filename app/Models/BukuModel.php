@@ -14,7 +14,7 @@ class BukuModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['judul', 'penulis', 'penerbit', 'tahun_terbit', 'isbn', 'jumlah'];
+    protected $allowedFields    = ['judul', 'penulis', 'penerbit', 'tahun_terbit', 'isbn', 'jumlah', 'gambar'];
 
     // Dates
     protected $useTimestamps = true;

@@ -11,14 +11,18 @@ class Auth extends BaseController
     public function __construct()
     {
         helper(['form']);
-        $this->userModel = new \App\Models\UserModel();
+        $this->userModel = new UserModel();
     }
 
     public function index()
     {
         // Jika sudah login, redirect ke dashboard sesuai role
         if (session()->get('logged_in')) {
-            return redirect()->to(session()->get('role') == 'admin' ? 'admin/dashboard' : 'user/dashboard');
+            if (session()->get('role') == 'admin') {
+                return redirect()->to('admin/dashboard');
+            } else {
+                return redirect()->to('user/dashboard');
+            }
         }
 
         // Tampilkan halaman login
@@ -39,11 +43,18 @@ class Auth extends BaseController
                     'username' => $user['username'],
                     'name' => $user['name'],
                     'role' => $user['role'],
+                    'profile_image' => $user['profile_image'] ?? null,
                     'logged_in' => TRUE
                 ];
                 session()->set($session_data);
                 
-                return redirect()->to($user['role'] == 'admin' ? 'admin/dashboard' : 'user/dashboard');
+                // Redirect berdasarkan role
+                if ($user['role'] == 'admin') {
+                    return redirect()->to('admin/dashboard');
+                } else {
+                    // Role anggota atau petugas diarahkan ke dashboard user
+                    return redirect()->to('user/dashboard');
+                }
             } else {
                 session()->setFlashdata('error', 'Password yang Anda masukkan salah');
                 return redirect()->back();

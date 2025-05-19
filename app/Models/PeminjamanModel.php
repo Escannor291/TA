@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class PeminjamanModel extends Model
 {
-     protected $DBGroup          = 'default';
+    protected $DBGroup          = 'default';
     protected $table            = 'peminjaman';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
@@ -14,7 +14,7 @@ class PeminjamanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['user_id', 'buku_id', 'tanggal_pinjam', 'tanggal_kembali', 'tanggal_dikembalikan', 'status'];
+    protected $allowedFields    = ['user_id', 'buku_id', 'tanggal_pinjam', 'tanggal_kembali', 'tanggal_dikembalikan', 'status', 'denda'];
 
     // Dates
     protected $useTimestamps = true;
