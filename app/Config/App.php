@@ -204,4 +204,16 @@ class App extends BaseConfig
      * @see http://www.w3.org/TR/CSP/
      */
     public bool $CSPEnabled = false;
+
+    /**
+     * CSRF Protection Settings
+     */
+    public bool $CSRFProtection = true;
+    public string $CSRFTokenName = 'csrf_test_name';
+    public string $CSRFHeaderName = 'X-CSRF-TOKEN';
+    public string $CSRFCookieName = 'csrf_cookie_name';
+    public int $CSRFExpire = 7200;
+    public bool $CSRFRegenerate = true;
+    public bool $CSRFRedirect = false; // Set false untuk tidak redirect otomatis
+    public string $CSRFSameSite = 'Lax';
 }

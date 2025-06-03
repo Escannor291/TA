@@ -6,8 +6,8 @@
 
 <div class="mb-6 flex justify-between items-center">
     <div>
-        <h1 class="text-2xl font-semibold text-dark">Dashboard Admin</h1>
-        <p class="text-gray-600 transition-opacity duration-500" id="welcomeMessage">Selamat datang kembali, <?= session()->get('name') ?? 'Administrator' ?></p>
+        <h1 class="text-2xl font-semibold text-dark page-title-decoration">Dashboard Admin</h1>
+        <p class="text-gray-600 transition-opacity duration-500 mt-2" id="welcomeMessage">Selamat datang kembali, <?= session()->get('name') ?? 'Administrator' ?></p>
     </div>
     
     <!-- Pencarian Global -->
@@ -25,7 +25,7 @@
 <!-- Statistik Utama -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
     <!-- Total Buku -->
-    <a href="<?= base_url('admin/buku') ?>" class="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 overflow-hidden group">
+    <a href="<?= base_url('admin/buku') ?>" class="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 overflow-hidden group decorated-card">
         <div class="flex items-center p-6">
             <div class="rounded-full bg-primary-light bg-opacity-30 p-4 mr-4 group-hover:bg-primary-light group-hover:bg-opacity-40 transition duration-300">
                 <i class="fas fa-book text-primary text-3xl"></i>
@@ -44,7 +44,7 @@
     </a>
     
     <!-- Total Peminjaman Aktif -->
-    <a href="<?= base_url('admin/peminjaman') ?>" class="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 overflow-hidden group">
+    <a href="<?= base_url('admin/peminjaman') ?>" class="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 overflow-hidden group decorated-card">
         <div class="flex items-center p-6">
             <div class="rounded-full bg-accent-light p-4 mr-4 group-hover:bg-accent transition duration-300">
                 <i class="fas fa-exchange-alt text-primary text-3xl"></i>
@@ -63,7 +63,7 @@
     </a>
     
     <!-- Total Anggota -->
-    <a href="<?= base_url('admin/users') ?>" class="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 overflow-hidden group">
+    <a href="<?= base_url('admin/users') ?>" class="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 overflow-hidden group decorated-card">
         <div class="flex items-center p-6">
             <div class="rounded-full bg-accent-light p-4 mr-4 group-hover:bg-accent transition duration-300">
                 <i class="fas fa-users text-primary text-3xl"></i>
@@ -144,10 +144,10 @@
 <!-- Grafik dan Statistik -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
     <!-- Grafik Peminjaman -->
-    <div class="lg:col-span-2 bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="lg:col-span-2 bg-white rounded-lg shadow-md overflow-hidden decorated-card">
         <div class="bg-background-light px-6 py-4 border-b border-background">
             <div class="flex justify-between items-center">
-                <h2 class="text-lg font-semibold text-dark">Statistik Peminjaman Mingguan</h2>
+                <h2 class="text-lg font-semibold text-dark page-title-decoration">Statistik Peminjaman Mingguan</h2>
             </div>
         </div>
         <div class="p-4">
@@ -156,9 +156,9 @@
     </div>
     
     <!-- Buku Terpopuler -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden decorated-card">
         <div class="bg-background-light px-6 py-4 border-b border-background">
-            <h2 class="text-lg font-semibold text-dark">Buku Terpopuler</h2>
+            <h2 class="text-lg font-semibold text-dark page-title-decoration">Buku Terpopuler</h2>
         </div>
         <div class="p-4">
             <?php if (empty($buku_terpopuler)): ?>
@@ -200,10 +200,10 @@
     
     <!-- Peminjaman Terbaru -->
     <div class="lg:col-span-2">
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden decorated-card">
             <div class="bg-background-light px-6 py-4 border-b border-background">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-semibold text-dark">Peminjaman Terbaru</h2>
+                    <h2 class="text-lg font-semibold text-dark page-title-decoration">Peminjaman Terbaru</h2>
                     <a href="<?= base_url('admin/peminjaman') ?>" class="text-primary hover:text-primary-dark text-sm flex items-center transition duration-200">
                         Lihat Semua 
                         <i class="fas fa-arrow-right ml-1 text-xs"></i>
@@ -277,9 +277,9 @@
     
     <!-- Ringkasan Sistem -->
     <div class="lg:col-span-1">
-        <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6 decorated-card">
             <div class="bg-background-light px-6 py-4 border-b border-background">
-                <h2 class="text-lg font-semibold text-dark">Ringkasan Sistem</h2>
+                <h2 class="text-lg font-semibold text-dark page-title-decoration">Ringkasan Sistem</h2>
             </div>
             <div class="p-5">
                 <div class="flex justify-between items-center mb-4">
@@ -311,107 +311,18 @@
         </div>
     </div>
 </div>
+<?= $this->endSection() ?>
 
-<!-- Tambahkan tag script untuk JavaScript dinamis -->
+<?= $this->section('scripts') ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Animasi counter untuk angka-angka statistik
-    function animateCounter(elementId, targetValue) {
-        const counterElement = document.getElementById(elementId);
-        const target = parseInt(targetValue);
-        const duration = 1000; // durasi animasi dalam ms
-        const frameRate = 60; // fps
-        const totalFrames = duration / 1000 * frameRate;
-        const increment = target / totalFrames;
-        
-        let currentCount = 0;
-        let currentFrame = 0;
-        
-        const counter = setInterval(() => {
-            currentCount += increment;
-            currentFrame++;
-            
-            if (currentFrame === totalFrames) {
-                clearInterval(counter);
-                counterElement.textContent = target;
-            } else {
-                counterElement.textContent = Math.floor(currentCount);
-            }
-        }, 1000 / frameRate);
-    }
+    // Inisialisasi fungsi-fungsi JavaScript di halaman dashboard
+    if (typeof fadeInElements === 'function') fadeInElements();
+    if (typeof animateCounters === 'function') animateCounters();
     
-    // Pesan welcome yang berubah
-    const welcomeMessage = document.getElementById('welcomeMessage');
-    const greetings = [
-        'Selamat datang kembali, <?= session()->get('name') ?? 'Administrator' ?>',
-        'Apa yang ingin Anda kerjakan hari ini?',
-        'Dashboard siap digunakan!',
-        'Semoga hari Anda menyenangkan!'
-    ];
-    
-    let greetingIndex = 0;
-    setInterval(() => {
-        welcomeMessage.style.opacity = 0;
-        setTimeout(() => {
-            greetingIndex = (greetingIndex + 1) % greetings.length;
-            welcomeMessage.textContent = greetings[greetingIndex];
-            welcomeMessage.style.opacity = 1;
-        }, 500); // setengah dari durasi transisi
-    }, 5000); // ganti tiap 5 detik
-    
-    // Tanggal dan waktu real-time
-    const currentDateElement = document.getElementById('currentDate');
-    function updateDateTime() {
-        const now = new Date();
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        currentDateElement.textContent = now.toLocaleDateString('id-ID', options);
-    }
-    
-    // Jalankan update tanggal tiap menit
-    updateDateTime();
-    setInterval(updateDateTime, 60000);
-    
-    // Highlight baris tabel saat dihover
-    const tableRows = document.querySelectorAll('#peminjamanTable tbody tr');
-    tableRows.forEach(row => {
-        row.addEventListener('mouseover', () => {
-            row.classList.add('bg-gray-50');
-        });
-        row.addEventListener('mouseout', () => {
-            row.classList.remove('bg-gray-50');
-        });
-    });
-    
-    // Jalankan animasi counter untuk semua elemen statistik
-    animateCounter('totalBuku', document.getElementById('totalBuku').getAttribute('data-count'));
-    animateCounter('totalPeminjaman', document.getElementById('totalPeminjaman').getAttribute('data-count'));
-    animateCounter('totalAnggota', document.getElementById('totalAnggota').getAttribute('data-count'));
-    animateCounter('totalBukuTersedia', document.getElementById('totalBukuTersedia').getAttribute('data-count'));
-    animateCounter('peminjamanHariIni', document.getElementById('peminjamanHariIni').getAttribute('data-count'));
-    
-    // Tambahkan highlight untuk baris dengan status terlambat
-    document.querySelectorAll('#peminjamanTable tbody tr').forEach(row => {
-        const statusCell = row.querySelector('td:nth-child(4)');
-        if (statusCell && statusCell.textContent.trim().includes('Terlambat')) {
-            statusCell.classList.add('animate-pulse');
-        }
-    });
-    
-    // Toggle notifikasi peminjaman hampir jatuh tempo
-    const toggleNotificationBtn = document.getElementById('toggleNotificationBtn');
-    const notificationDetails = document.getElementById('notificationDetails');
-    
-    if (toggleNotificationBtn) {
-        toggleNotificationBtn.addEventListener('click', function() {
-            notificationDetails.classList.toggle('hidden');
-            toggleNotificationBtn.querySelector('i').classList.toggle('fa-chevron-down');
-            toggleNotificationBtn.querySelector('i').classList.toggle('fa-chevron-up');
-        });
-    }
-    
-    // Chart peminjaman mingguan
+    // Chart peminjaman mingguan dengan warna sesuai tema
     const ctx = document.getElementById('peminjamanChart');
-    if (ctx) {
+    if (ctx && typeof Chart !== 'undefined') {
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -452,76 +363,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Pencarian global
-    const globalSearch = document.getElementById('globalSearch');
-    const searchResults = document.getElementById('searchResults');
+    // Toggle notifikasi peminjaman hampir jatuh tempo
+    const toggleBtn = document.getElementById('toggleNotificationBtn');
+    const notifDetails = document.getElementById('notificationDetails');
     
-    if (globalSearch) {
-        globalSearch.addEventListener('focus', function() {
-            if (globalSearch.value.length > 0) {
-                searchResults.classList.remove('hidden');
-            }
-        });
-        
-        globalSearch.addEventListener('blur', function(e) {
-            // Delay hiding to allow clicking on results
-            setTimeout(() => {
-                searchResults.classList.add('hidden');
-            }, 200);
-        });
-        
-        globalSearch.addEventListener('input', function() {
-            if (this.value.length > 2) { // Search after 3 characters
-                // Simulate search results
-                searchResults.classList.remove('hidden');
-                fetch(`<?= base_url('admin/search') ?>?q=${this.value}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        let html = '';
-                        
-                        // Show results or "no results" message
-                        if (data.length === 0) {
-                            html = '<div class="p-3 text-sm text-gray-500">Tidak ada hasil ditemukan</div>';
-                        } else {
-                            data.forEach(item => {
-                                let icon = '';
-                                let link = '#';
-                                
-                                if (item.type === 'buku') {
-                                    icon = '<i class="fas fa-book text-blue-600 mr-2"></i>';
-                                    link = `<?= base_url('admin/buku/edit') ?>/${item.id}`;
-                                } else if (item.type === 'anggota') {
-                                    icon = '<i class="fas fa-user text-green-600 mr-2"></i>';
-                                    link = `<?= base_url('admin/users/edit') ?>/${item.id}`;
-                                } else if (item.type === 'peminjaman') {
-                                    icon = '<i class="fas fa-bookmark text-indigo-600 mr-2"></i>';
-                                    link = `<?= base_url('admin/peminjaman/detail') ?>/${item.id}`;
-                                }
-                                
-                                html += `
-                                <a href="${link}" class="block p-2 hover:bg-gray-50 text-sm">
-                                    <div class="flex items-center">
-                                        ${icon}
-                                        <div>
-                                            <p class="font-medium">${item.title}</p>
-                                            <p class="text-xs text-gray-500">${item.subtitle}</p>
-                                        </div>
-                                    </div>
-                                </a>`;
-                            });
-                        }
-                        
-                        searchResults.innerHTML = html;
-                    })
-                    .catch(error => {
-                        console.error('Error during search:', error);
-                        searchResults.innerHTML = '<div class="p-3 text-sm text-red-500">Error during search</div>';
-                    });
-            } else {
-                searchResults.classList.add('hidden');
-            }
+    if (toggleBtn && notifDetails) {
+        toggleBtn.addEventListener('click', function() {
+            notifDetails.classList.toggle('hidden');
+            toggleBtn.querySelector('i').classList.toggle('fa-chevron-down');
+            toggleBtn.querySelector('i').classList.toggle('fa-chevron-up');
         });
     }
+    
+    console.log('Dashboard script initialized! ✨');
 });
 </script>
 <?= $this->endSection() ?>

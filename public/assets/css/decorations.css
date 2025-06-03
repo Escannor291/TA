@@ -1,0 +1,87 @@
+/* Dekorasi untuk website perpustakaan */
+.decor-books {
+  background-image: url("/assets/img/decor-books.svg");
+  background-repeat: repeat-x;
+  background-size: 60px;
+  height: 30px;
+  opacity: 0.2;
+}
+
+.decor-leaves {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background-image: url("/assets/img/decor-leaves.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.1;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.decor-dots {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 180px;
+  height: 180px;
+  background-image: url("/assets/img/decor-dots.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.1;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.page-title-decoration {
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.page-title-decoration::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 60px;
+  background: linear-gradient(90deg, #795548 0%, #ffcc80 100%);
+  border-radius: 10px;
+}
+
+.decorated-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.decorated-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background-image: url("/assets/img/decor-corner.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.2;
+  z-index: 1;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.floating-decor {
+  animation: float 5s ease-in-out infinite;
+}

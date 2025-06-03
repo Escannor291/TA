@@ -10,7 +10,7 @@
     <div class="flex">
         <div class="ml-3">
             <p class="text-sm text-yellow-700">
-                <strong>Selamat datang, <?= session()->get('name') ?? 'Guest User' ?>!</strong><br>
+                <strong>Selamat datang, <?= session()->get('name') ?? 'User' ?>!</strong><br>
                 Role: <?= ucfirst(session()->get('role') ?? 'anggota') ?><br>
                 Total Peminjaman: <?= isset($totalPeminjaman) ? $totalPeminjaman : 0 ?><br>
                 Sedang Dipinjam: <?= isset($sedangDipinjam) ? $sedangDipinjam : 0 ?>
@@ -58,6 +58,14 @@
     </div>
 </div>
 
+<!-- Debug Info (hapus setelah testing) -->
+<div class="bg-gray-100 p-4 mb-6 rounded">
+    <h3>Debug Info:</h3>
+    <p>Session User ID: <?= session()->get('user_id') ?? 'Not set' ?></p>
+    <p>Total Peminjaman: <?= isset($totalPeminjaman) ? $totalPeminjaman : 'Not set' ?></p>
+    <p>Peminjaman Data: <?= !empty($peminjaman) ? 'Available (' . count($peminjaman) . ' items)' : 'Empty or not set' ?></p>
+</div>
+
 <!-- Riwayat Peminjaman -->
 <div class="bg-white shadow-md rounded-lg p-6 fade-in">
     <div class="flex justify-between items-center mb-4">
@@ -67,7 +75,7 @@
         </a>
     </div>
 
-    <?php if (!empty($peminjaman) && isset($peminjaman) && count($peminjaman) > 0): ?>
+    <?php if (!empty($peminjaman) && isset($peminjaman)): ?>
         <div class="overflow-x-auto">
             <table class="min-w-full table-auto">
                 <thead class="bg-gray-50">
@@ -91,16 +99,20 @@
                                 <?= date('d/m/Y', strtotime($item['tanggal_pinjam'])) ?>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                <?= date('d/m/Y', strtotime($item['tanggal_kembali'])) ?>
+                                <?= date('d/m/Y', strtotime($item['batas_kembali'])) ?>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <?php if (strtolower($item['status']) == 'dipinjam'): ?>
+                                <?php if ($item['status'] == 'Dipinjam'): ?>
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                         Dipinjam
                                     </span>
-                                <?php else: ?>
+                                <?php elseif ($item['status'] == 'Dikembalikan'): ?>
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                         Dikembalikan
+                                    </span>
+                                <?php else: ?>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                        <?= $item['status'] ?>
                                     </span>
                                 <?php endif; ?>
                             </td>

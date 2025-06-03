@@ -22,19 +22,19 @@ class Peminjaman extends BaseController
     
     public function index()
     {
-        // Ambil data peminjaman beserta relasi ke buku dan peminjam
+        // Perbaiki query untuk join dengan tabel users tanpa kolom email yang tidak ada
         $peminjaman = $this->peminjamanModel
-            ->select('peminjaman.*, buku.judul as judul_buku, users.name as nama_peminjam')
-            ->join('buku', 'buku.id = peminjaman.buku_id')
-            ->join('users', 'users.id = peminjaman.user_id')
-            ->orderBy('peminjaman.created_at', 'DESC')
+            ->select('peminjaman.*, buku.judul, buku.penulis, buku.penerbit, users.name as nama_peminjam')
+            ->join('buku', 'buku.id = peminjaman.buku_id', 'left')
+            ->join('users', 'users.id = peminjaman.user_id', 'left')
+            ->orderBy('peminjaman.tanggal_pinjam', 'DESC')
             ->findAll();
-        
+
         $data = [
-            'title' => 'Data Peminjaman - Perpustakaan Fachri',
+            'title' => 'Data Peminjaman',
             'peminjaman' => $peminjaman
         ];
-        
+
         return view('admin/peminjaman/index', $data);
     }
     

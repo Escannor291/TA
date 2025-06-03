@@ -41,10 +41,15 @@
                 </tr>
                 <?php else: ?>
                 <?php $no = 1; foreach ($peminjaman as $row): ?>
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= $no++ ?></td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= $row['nama_peminjam'] ?></td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= $row['judul_buku'] ?></td>
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><?= $no++ ?></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <?= isset($row['nama_peminjam']) ? $row['nama_peminjam'] : 'Data tidak tersedia' ?>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900"><?= isset($row['judul']) ? $row['judul'] : 'Judul tidak tersedia' ?></div>
+                        <div class="text-sm text-gray-500"><?= isset($row['penulis']) ? $row['penulis'] : 'Penulis tidak tersedia' ?></div>
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= date('d/m/Y', strtotime($row['tanggal_pinjam'])) ?></td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= date('d/m/Y', strtotime($row['tanggal_kembali'])) ?></td>
                     <td class="px-6 py-4 whitespace-nowrap">

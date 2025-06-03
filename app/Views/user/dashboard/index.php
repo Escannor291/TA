@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
 <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-semibold page-title-decoration fade-in"><?= isset($title) ? $title : 'Dashboard Anggota' ?></h1>
+    <h1 class="text-2xl font-semibold page-title-decoration fade-in"><?= $title ?></h1>
 </div>
 
 <!-- Welcome Card -->
@@ -10,8 +10,8 @@
     <div class="flex">
         <div class="ml-3">
             <p class="text-sm text-yellow-700">
-                <strong>Selamat datang, <?= session()->get('name') ?? 'Guest User' ?>!</strong><br>
-                Role: <?= ucfirst(session()->get('role') ?? 'anggota') ?><br>
+                <strong>Selamat datang, <?= session()->get('name') ?>!</strong><br>
+                Role: <?= ucfirst(session()->get('role')) ?><br>
                 Total Peminjaman: <?= isset($totalPeminjaman) ? $totalPeminjaman : 0 ?><br>
                 Sedang Dipinjam: <?= isset($sedangDipinjam) ? $sedangDipinjam : 0 ?>
             </p>
@@ -67,7 +67,7 @@
         </a>
     </div>
 
-    <?php if (!empty($peminjaman) && isset($peminjaman) && count($peminjaman) > 0): ?>
+    <?php if (!empty($peminjaman) && isset($peminjaman)): ?>
         <div class="overflow-x-auto">
             <table class="min-w-full table-auto">
                 <thead class="bg-gray-50">

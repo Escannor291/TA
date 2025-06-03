@@ -99,94 +99,105 @@ class Buku extends BaseController
         return redirect()->to(base_url('admin/buku'));
     }
     
-    public function edit($id = null)
+    public function edit($id)
     {
         $buku = $this->bukuModel->find($id);
         
         if (!$buku) {
-            session()->setFlashdata('error', 'Buku tidak ditemukan');
+            session()->setFlashdata('error', 'Data buku tidak ditemukan');
             return redirect()->to(base_url('admin/buku'));
+        }
+        
+        // Pastikan semua field ada, jika tidak beri nilai default
+        if (!isset($buku['deskripsi'])) {
+            $buku['deskripsi'] = '';
         }
         
         $data = [
             'title' => 'Edit Buku',
-            'validation' => \Config\Services::validation(),
-            'buku' => $buku
+            'buku' => $buku,
+            'validation' => \Config\Services::validation()
         ];
         
         return view('admin/buku/form', $data);
     }
     
-    public function update($id = null)
+    public function update($id)
     {
+        $buku = $this->bukuModel->find($id);
+        
+        if (!$buku) {
+            session()->setFlashdata('error', 'Data buku tidak ditemukan');
+            return redirect()->to(base_url('admin/buku'));
+        }
+        
         // Validasi input
         $rules = [
             'judul' => 'required|min_length[3]',
-            'penulis' => 'required',
-            'penerbit' => 'required',
-            'tahun_terbit' => 'required|numeric|min_length[4]|max_length[4]',
-            'isbn' => 'required|min_length[10]',
-            'jumlah' => 'required|numeric|greater_than[0]'
+            'penulis' => 'required|min_length[3]',
+            'penerbit' => 'required|min_length[3]',
+            'tahun_terbit' => 'required|numeric|min_length[4]',
+            'jumlah' => 'required|numeric|greater_than[0]',
+            'isbn' => 'required'
         ];
+        
+        // Validasi foto jika ada upload
+        $foto = $this->request->getFile('foto');
+        if ($foto && $foto->isValid() && !$foto->hasMoved()) {
+            $rules['foto'] = 'uploaded[foto]|max_size[foto,2048]|is_image[foto]|mime_in[foto,image/jpg,image/jpeg,image/png]';
+        }
         
         if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('validation', $this->validator);
         }
         
-        // Ambil data buku yang akan diupdate
-        $buku = $this->bukuModel->find($id);
-        if (!$buku) {
-            session()->setFlashdata('error', 'Buku tidak ditemukan');
-            return redirect()->to(base_url('admin/buku'));
-        }
-        
-        // Siapkan data untuk update
+        // Data yang akan diupdate
         $data = [
             'judul' => $this->request->getPost('judul'),
             'penulis' => $this->request->getPost('penulis'),
             'penerbit' => $this->request->getPost('penerbit'),
             'tahun_terbit' => $this->request->getPost('tahun_terbit'),
+            'jumlah' => $this->request->getPost('jumlah'),
             'isbn' => $this->request->getPost('isbn'),
-            'jumlah' => $this->request->getPost('jumlah')
+            'deskripsi' => $this->request->getPost('deskripsi') ?? '' // Berikan default value
         ];
         
-        // Proses upload gambar jika ada
-        $gambar = $this->request->getFile('gambar');
-        if ($gambar && $gambar->isValid() && !$gambar->hasMoved()) {
-            // Buat direktori jika belum ada
-            $uploadPath = './uploads/buku';
-            if (!is_dir($uploadPath)) {
-                mkdir($uploadPath, 0777, true);
-            }
-            
-            // Hapus gambar lama jika ada
-            if (!empty($buku['gambar']) && file_exists('.' . $buku['gambar'])) {
-                unlink('.' . $buku['gambar']);
-            }
-            
-            // Generate nama unik untuk file gambar
-            $fileName = $gambar->getRandomName();
-            
-            // Pindahkan file ke direktori uploads
-            if ($gambar->move($uploadPath, $fileName)) {
-                // Simpan path ke database
-                $data['gambar'] = 'uploads/buku/' . $fileName;
-                log_message('info', 'Gambar berhasil diupload: ' . $data['gambar']);
-            } else {
-                log_message('error', 'Gagal mengupload gambar: ' . $gambar->getErrorString());
-                session()->setFlashdata('error', 'Gagal mengupload gambar buku');
+        // Handle upload foto baru
+        if ($foto && $foto->isValid() && !$foto->hasMoved()) {
+            try {
+                // Hapus foto lama jika ada
+                if (!empty($buku['foto']) && file_exists(FCPATH . 'uploads/buku/' . $buku['foto'])) {
+                    unlink(FCPATH . 'uploads/buku/' . $buku['foto']);
+                }
+                
+                // Generate nama file unik
+                $newName = $foto->getRandomName();
+                
+                // Pindahkan file ke folder uploads/buku
+                if ($foto->move(FCPATH . 'uploads/buku/', $newName)) {
+                    $data['foto'] = $newName;
+                } else {
+                    session()->setFlashdata('error', 'Gagal mengupload foto');
+                    return redirect()->back()->withInput();
+                }
+                
+            } catch (\Exception $e) {
+                session()->setFlashdata('error', 'Terjadi kesalahan saat mengupload foto: ' . $e->getMessage());
                 return redirect()->back()->withInput();
             }
         }
         
-        // Update data di database
-        if ($this->bukuModel->update($id, $data)) {
+        try {
+            // Update data buku
+            $this->bukuModel->update($id, $data);
+            
             session()->setFlashdata('message', 'Data buku berhasil diperbarui');
-        } else {
-            session()->setFlashdata('error', 'Gagal memperbarui data buku');
+            return redirect()->to(base_url('admin/buku'));
+            
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
+            return redirect()->back()->withInput();
         }
-        
-        return redirect()->to(base_url('admin/buku'));
     }
     
     public function delete($id = null)
